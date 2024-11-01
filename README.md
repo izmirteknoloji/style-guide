@@ -77,15 +77,32 @@ The following additional configs are available:
 > [eslint/eslint#9188](https://github.com/eslint/eslint/issues/9188)).
 
 For example, use the shared ESLint config(s) in a Next.js project, set the
-following in `.eslintrc.js`.
+following in `.eslintrc.cjs`.
 
 ```js
+const { resolve } = require('node:path');
+
+const project = resolve(__dirname, 'tsconfig.json');
+
 module.exports = {
+  root: true,
   extends: [
-    require.resolve('@izmirteknoloji/style-guide/eslint/browser'),
+    require.resolve('@izmirteknoloji/style-guide/eslint/typescript'),
     require.resolve('@izmirteknoloji/style-guide/eslint/react'),
     require.resolve('@izmirteknoloji/style-guide/eslint/next'),
   ],
+  parserOptions: {
+    ecmaVersion: 'latest',
+    sourceType: 'module',
+    project,
+  },
+  settings: {
+    'import/resolver': {
+      typescript: {
+        project,
+      },
+    },
+  },
 };
 ```
 
