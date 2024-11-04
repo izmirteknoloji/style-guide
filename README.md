@@ -16,18 +16,8 @@ The following configs are available, and are designed to be used together.
 All of our configs are contained in one package, `@izmirteknoloji/style-guide`. To install:
 
 ```sh
-# If you use npm
-npm i --save-dev @izmirteknoloji/style-guide
-
-# If you use pnpm
-pnpm i --save-dev @izmirteknoloji/style-guide
-
-# If you use Yarn
-yarn add --dev @izmirteknoloji/style-guide
+pnpm add -D @izmirteknoloji/style-guide
 ```
-
-Some of our ESLint configs require peer dependencies. We'll note those
-alongside the available configs in the [ESLint](#eslint) section.
 
 ## Prettier
 
@@ -44,40 +34,11 @@ To use the shared Prettier config, set the following in `package.json`.
 }
 ```
 
-## ESLint
+## Examples
 
-> Note: ESLint is a peer-dependency of this package, and should be installed
-> at the root of your project.
->
-> See: https://eslint.org/docs/user-guide/getting-started#installation-and-usage
+### Next.js
 
-This ESLint config is designed to be composable.
-
-The following base configs are available. You can use one or both of these
-configs, but they should always be first in `extends`:
-
-- `@izmirteknoloji/style-guide/eslint/browser`
-- `@izmirteknoloji/style-guide/eslint/node`
-
-Note that you can scope configs, so that configs only target specific files.
-For more information, see: [Scoped configuration with `overrides`](#scoped-configuration-with-overrides).
-
-The following additional configs are available:
-
-- `@izmirteknoloji/style-guide/eslint/jest`
-- `@izmirteknoloji/style-guide/eslint/jest-react` (includes rules for `@testing-library/react`)
-- `@izmirteknoloji/style-guide/eslint/next` (requires `@next/eslint-plugin-next` to be installed at the same version as `next`)
-- `@izmirteknoloji/style-guide/eslint/playwright-test`
-- `@izmirteknoloji/style-guide/eslint/react`
-- `@izmirteknoloji/style-guide/eslint/typescript` (requires `typescript` to be installed and [additional configuration](#configuring-eslint-for-typescript))
-- `@izmirteknoloji/style-guide/eslint/vitest`
-
-> You'll need to use `require.resolve` to provide ESLint with absolute paths,
-> due to an issue around ESLint config resolution (see
-> [eslint/eslint#9188](https://github.com/eslint/eslint/issues/9188)).
-
-For example, use the shared ESLint config(s) in a Next.js project, set the
-following in `.eslintrc.cjs`.
+For example, to use the Next.js config, set the following in `.eslintrc.js`.
 
 ```js
 const { resolve } = require('node:path');
@@ -106,83 +67,36 @@ module.exports = {
 };
 ```
 
-### Configuring ESLint for TypeScript
+Some of our ESLint configs require peer dependencies. We'll note those
+alongside the available configs in the [ESLint](#eslint) section.
 
-Some of the rules enabled in the TypeScript config require additional type
-information, you'll need to provide the path to your `tsconfig.json`.
+## ESLint
 
-For more information, see: https://typescript-eslint.io/docs/linting/type-linting
+> Note: ESLint is a peer-dependency of this package, and should be installed
+> at the root of your project.
+>
+> See: https://eslint.org/docs/user-guide/getting-started#installation-and-usage
 
-```js
-const { resolve } = require('node:path');
+This ESLint config is designed to be composable.
 
-const project = resolve(__dirname, 'tsconfig.json');
+The following base configs are available. You can use one or both of these
+configs, but they should always be first in `extends`:
 
-module.exports = {
-  root: true,
-  extends: [
-    require.resolve('@izmirteknoloji/style-guide/eslint/node'),
-    require.resolve('@izmirteknoloji/style-guide/eslint/typescript'),
-  ],
-  parserOptions: {
-    project,
-  },
-  settings: {
-    'import/resolver': {
-      typescript: {
-        project,
-      },
-    },
-  },
-};
-```
+- `@izmirteknoloji/style-guide/eslint/browser`
+- `@izmirteknoloji/style-guide/eslint/node`
 
-### Configuring custom components for `jsx-a11y`
+Note that you can scope configs, so that configs only target specific files.
+For more information, see: [Scoped configuration with `overrides`](#scoped-configuration-with-overrides).
 
-It's common practice for React apps to have shared components like `Button`,
-which wrap native elements. You can pass this information along to `jsx-a11y`
-via the `components` setting.
+The following additional configs are available:
 
-The below list is not exhaustive.
-
-```js
-module.exports = {
-  root: true,
-  extends: [require.resolve('@izmirteknoloji/style-guide/eslint/react')],
-  settings: {
-    'jsx-a11y': {
-      components: {
-        Article: 'article',
-        Button: 'button',
-        Image: 'img',
-        Input: 'input',
-        Link: 'a',
-        Video: 'video',
-      },
-    },
-  },
-};
-```
-
-### Scoped configuration with `overrides`
-
-ESLint configs can be scoped to include/exclude specific paths. This ensures
-that rules don't "leak" into places where those rules don't apply.
-
-In this example, Jest rules are only being applied to files matching Jest's
-default test match pattern.
-
-```js
-module.exports = {
-  extends: [require.resolve('@izmirteknoloji/style-guide/eslint/node')],
-  overrides: [
-    {
-      files: ['**/__tests__/**/*.[jt]s?(x)', '**/?(*.)+(spec|test).[jt]s?(x)'],
-      extends: [require.resolve('@izmirteknoloji/style-guide/eslint/jest')],
-    },
-  ],
-};
-```
+- `@izmirteknoloji/style-guide/eslint/jest`
+- `@izmirteknoloji/style-guide/eslint/jest-react` (includes rules for `@testing-library/react`)
+- `@izmirteknoloji/style-guide/eslint/next` (requires `@next/eslint-plugin-next` to be installed at the same version as `next`)
+- `@izmirteknoloji/style-guide/eslint/playwright-test`
+- `@izmirteknoloji/style-guide/eslint/react`
+- `@izmirteknoloji/style-guide/eslint/typescript` (requires `typescript` to be installed and [additional configuration](#configuring-eslint-for-typescript))
+- `@izmirteknoloji/style-guide/eslint/vitest`
 
 #### A note on file extensions
 
